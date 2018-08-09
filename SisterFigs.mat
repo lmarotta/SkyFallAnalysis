@@ -4,7 +4,7 @@ figure(1);
 
 threshold = 30:0.1:40;
 
-for jj=1:10
+for jj=1:1000
 
 load('peak_ADL.mat'); %% FallsH
 load('peaks_real.mat');
