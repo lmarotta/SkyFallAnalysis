@@ -4,7 +4,7 @@ figure(1);
 
 threshold = 30:0.1:40;
 
-for jj=1:10
+for jj=1:1000
 
 load('peak_ADL.mat'); %% FallsH
 load('peaks_real.mat');
@@ -20,12 +20,12 @@ maxacc=maxacc(l);
 maxacc1val=maxacc1(1:8000);
 maxacc1real=maxacc1(8001:16000);
 
-withsim= [maxacc1val';maxacc(1:8)'];
-labels= [zeros(length(maxacc1val),1);  ones(8,1)];
+withsim= [maxacc1val';maxacc(1:14)'];
+labels= [zeros(length(maxacc1val),1);  ones(14,1)];
 TabSim=[withsim labels];
 
 withreal= [maxacc1real';maxacc2'];
-labelsreal= [zeros(length(maxacc1real),1);  ones(8,1)];
+labelsreal= [zeros(length(maxacc1real),1);  ones(14,1)];
 TabReal=[withreal labelsreal];
 
 for i=1:length(threshold)
