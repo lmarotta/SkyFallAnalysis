@@ -4,7 +4,7 @@ figure(1);
 
 CostValues1=[zeros(100,1)';linspace(0.04,0.99,100)];
 CostValues2=[linspace(0.99,0.1,100);zeros(100,1)'];
-subjects_n=10:4:26;
+subjects_n=3:2:25;
 
 load('FallsL.mat'); %% FallsH
 load('DeeptableNoFallsFinal.mat');
@@ -12,10 +12,7 @@ load('DeepTableNoSide5SecSubAn.mat');
 
 for jj=1:length(subjects_n)
 
-for nindex=1:2
-
-
-
+for nindex=1:100
 
 l=randperm(size(DeepTableNoFalls,1),size(DeepTableNoFalls,1));
 DeepTableNoFalls=DeepTableNoFalls(l,1:end);
@@ -44,17 +41,33 @@ Sub1=table2array(TestTableNoFalls(:,1));
 
 % randomly select as many falls as no falls we have
 subarr=(unique((DeepTableNoSide5Sec.Subject)));
+num_events=countcats(categorical(DeepTableNoSide5Sec.Subject));
+tabella=[subarr num2cell(num_events)];
 ann=length(subarr);
 ii=randperm(ann);
-sub_arr=subarr(ii);
+tabella=tabella(ii,:);
+sub_arr=tabella(:,1);
+num_events=cell2mat(tabella(:,2));
 
+%make sure that the total number of events coming equally from each subject will be larger than 100
+if min(num_events(1:subjects_n(jj)))*subjects_n(jj)>=100
+   sub_arr=sub_arr(1:subjects_n(jj));
+   end_val=min(num_events(1:subjects_n(jj)));
+else
+ii=find(num_events>=100/subjects_n(jj)+1); 
+sub_arr=sub_arr(ii);
 sub_arr=sub_arr(1:subjects_n(jj));
+num_events=(num_events(ii));
+end_val=min(num_events(1:subjects_n(jj)));
+
+end
+
 
 for i = 1:subjects_n(jj)
     bb=sub_arr(i);
     sub_ind=cellfun(@(x) ismember(x, {bb{1,1}}), DeepTableNoSide5Sec.Subject, 'UniformOutput', 0);
     sub_ind1=find(cell2mat(sub_ind));
-    final_ind(i,:)=sub_ind1(1:10);
+    final_ind(i,:)=sub_ind1(1:end_val);
 end   
   
 DeepTableNoSide5Sec2=DeepTableNoSide5Sec(final_ind(1:100),:);
@@ -186,6 +199,7 @@ maximalv=bv1(end)-bv1(1);
 aucrel_v(nindex)=trapz(1-SP(nindex,:),SE(nindex,:));
 aucperc_v(nindex)=aucrel_v(nindex)/maximalv;
 
+clear final_ind
 end
 
 AUCmean(jj)=mean(aucperc);
