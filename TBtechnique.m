@@ -20,12 +20,12 @@ maxacc=maxacc(l);
 maxacc1val=maxacc1(1:8000);
 maxacc1real=maxacc1(8001:16000);
 
-withsim= [maxacc1val';maxacc(1:14)'];
-labels= [zeros(length(maxacc1val),1);  ones(14,1)];
+withsim= [maxacc1val';maxacc(1:length(maxacc2))'];
+labels= [zeros(length(maxacc1val),1);  ones(length(maxacc2),1)];
 TabSim=[withsim labels];
 
 withreal= [maxacc1real';maxacc2'];
-labelsreal= [zeros(length(maxacc1real),1);  ones(14,1)];
+labelsreal= [zeros(length(maxacc1real),1);  ones(length(maxacc2),1)];
 TabReal=[withreal labelsreal];
 
 for i=1:length(threshold)
